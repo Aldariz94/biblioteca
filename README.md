@@ -13,13 +13,10 @@ Este proyecto es parte de la titulación en Ingeniería en Informática.
 
 ## 🚀 Instrucciones para ejecutar el proyecto
 
-### 1. Clona el repositorio
-```bash
-git clone https://github.com/tu_usuario/biblioteca.git
-cd biblioteca
-```
 
-### 2. Instalación del Backend
+## 🔧 Backend
+
+### Instalación
 ```bash
 cd backend
 yarn install
@@ -37,7 +34,11 @@ Inicia el servidor:
 yarn start
 ```
 
-### 3. Instalación del Frontend
+---
+
+## 💻 Frontend
+
+### Instalación
 ```bash
 cd ../frontend
 yarn install
@@ -55,7 +56,7 @@ yarn dev
 
 ---
 
-## 🔧 Funcionalidades principales
+## 🧩 Funcionalidades principales
 
 - Login de usuario
 - Visualización y creación de libros con clasificación Dewey
