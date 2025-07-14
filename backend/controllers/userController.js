@@ -5,24 +5,35 @@ const LoanCtrl = require('../models/Loan');
 
 exports.getProfile = (req, res) => res.json(req.user);
 
-// Dar de baja usuario (solo admin, sin préstamos activos, no eliminar otros admins)
+// Eliminar usuario de forma permanente (si no es admin ni tiene préstamos activos)
 exports.deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await UserCtrl.findById(req.params.id);
     if (!user) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-    // No permitir desactivar a otro admin
+
     if (user.role === 'admin') {
-      return res.status(403).json({ mensaje: 'No está permitido eliminar o desactivar a otro administrador' });
+      return res.status(403).json({ mensaje: 'No está permitido eliminar a otro administrador' });
     }
-    // Verificar préstamos activos
-    const prestamosAct = await Loan.find({ user: user._id, status: 'activo' });
+
+    const prestamosAct = await LoanCtrl.find({ user: user._id, status: 'activo' });
     if (prestamosAct.length > 0) {
-      return res.status(400).json({ mensaje: 'Usuario tiene préstamos activos y no puede darse de baja' });
+      return res.status(400).json({ mensaje: 'Usuario tiene préstamos activos y no puede ser eliminado' });
     }
-    user.active = false;  // marcar inactivo en lugar de eliminar
-    await user.save();
-    res.json({ mensaje: 'Usuario desactivado correctamente' });
+
+    await UserCtrl.findByIdAndDelete(req.params.id); // 🔥 Elimina el documento
+    res.json({ mensaje: 'Usuario eliminado permanentemente' });
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al dar de baja usuario', error: error.message });
+    res.status(500).json({ mensaje: 'Error al eliminar usuario', error: error.message });
+  }
+};
+
+
+// Listar todos los usuarios (solo para admin)
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await UserCtrl.find().select('-password');
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener usuarios' });
   }
 };

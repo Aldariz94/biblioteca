@@ -15,7 +15,7 @@ const app = express();
 
 // 3. Middlewares globales
 app.use(express.json());                             // Parsear JSON en el body
-app.use(cors({ origin: 'http://localhost:3000' }));  // Permitir solicitudes desde el frontend
+app.use(cors({ origin: 'http://localhost:5173' }));  // Permitir solicitudes desde el frontend
 
 // 4. Rutas de la API
 app.use('/api/auth', require('./routes/auth'));      // Autenticación (registro/login)
